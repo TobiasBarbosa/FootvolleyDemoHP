@@ -1,4 +1,8 @@
 package org.example.footvolleydemohp.model;
 
-public class User {
+public enum Role {
+
+    USER,
+    ADMIN;
+
 }
