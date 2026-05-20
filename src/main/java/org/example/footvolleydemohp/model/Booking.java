@@ -1,10 +1,13 @@
 package org.example.footvolleydemohp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
 @Entity
 @Table(
         name = "booking",
@@ -28,5 +31,5 @@ public class Booking {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "training_event_id", nullable = false)
-    private TrainingEvent trainingEvent;
+    private Event event;
 }

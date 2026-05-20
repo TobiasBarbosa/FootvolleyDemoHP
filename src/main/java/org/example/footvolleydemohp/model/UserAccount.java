@@ -2,11 +2,13 @@ package org.example.footvolleydemohp.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor // allowing empty constructor
 @Table(name = "user_account")
 public class UserAccount {
 
