@@ -1,8 +1,8 @@
 package org.example.footvolleydemohp.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.footvolleydemohp.model.Booking;
-import org.example.footvolleydemohp.service.BookingService;
+import org.example.footvolleydemohp.model.UserAccount;
+import org.example.footvolleydemohp.service.UserAccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,36 +10,36 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/bookings")
-public class BookingController {
+@RequestMapping("/api/users")
+public class UserAccountController {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
-    private final BookingService bookingService;
+    private final UserAccountService userAccountService;
 
     //***CRUD***--------------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestParam Long userId, @RequestParam Long eventId) {
-        Booking bookingCreated = bookingService.createBooking(userId, eventId);
-        return ResponseEntity.status(201).body(bookingCreated);
+    public ResponseEntity<UserAccount> createUserAccount(@RequestBody UserAccount user) {
+        return ResponseEntity.status(201)
+                .body(userAccountService.createUser(user));
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
     @GetMapping
-    public ResponseEntity<List<Booking>> getAllBookings() {
-        return ResponseEntity.ok(bookingService.getAllBookings());
+    public ResponseEntity<List<UserAccount>> getAllUserAccounts() {
+        return ResponseEntity.ok(userAccountService.getAllUsers());
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Booking>> getUserBookingsById(@PathVariable Long userId) {
-        return ResponseEntity.ok(bookingService.getBookingsByUser(userId));
+    @GetMapping("/{id}")
+    public ResponseEntity<UserAccount> getUserAccountById(@PathVariable Long id) {
+        return ResponseEntity.ok(userAccountService.getUserById(id));
     }
 
     //-----------------------------------------------------------------------------------------------------------------U
     //-----------------------------------------------------------------------------------------------------------------D
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+    public ResponseEntity<Void> deleteUserAccount(@PathVariable Long id) {
+        userAccountService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

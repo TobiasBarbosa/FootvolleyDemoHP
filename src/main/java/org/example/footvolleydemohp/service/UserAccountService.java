@@ -1,12 +1,13 @@
 package org.example.footvolleydemohp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UnauthorizedAccessException;
+import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserAlreadyExistsException;
+import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserNotFoundException;
 import org.example.footvolleydemohp.model.Role;
 import org.example.footvolleydemohp.model.UserAccount;
 import org.example.footvolleydemohp.repository.UserAccountRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,29 +21,58 @@ public class UserAccountService {
     //***BUSINESS LOGIC & CRUD***---------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
     public UserAccount createUser(UserAccount user) {
+        // Business rule: email must be unique
+        if (userAccountRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException(user.getEmail());
+        }
         return userAccountRepository.save(user);
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
     public UserAccount getUserById(Long id) {
         return userAccountRepository.findById(id)
-                                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                                    .orElseThrow(()-> new UserNotFoundException(id));
     }
 
     public List<UserAccount> getAllUsers() {
         return userAccountRepository.findAll();
     }
 
-    public List<UserAccount> getAllUsersAsAdmin(UserAccount requester) {
+    public List<UserAccount> getAllUsersForAdmin(UserAccount requester) {
 
         if (requester.getRole() != Role.ADMIN) {
-            throw new IllegalArgumentException("Not authorized");
+            throw new UnauthorizedAccessException(requester.getRole());
         }
 
         return userAccountRepository.findAll();
     }
 
     //-----------------------------------------------------------------------------------------------------------------U
+    public UserAccount updateUser(Long id, UserAccount updatedUser) {
+
+        UserAccount existingUser = getUserById(id);
+
+        // Business rule: email uniqueness check (only if changed)
+        if (!existingUser.getEmail().equals(updatedUser.getEmail())
+                && userAccountRepository.existsByEmail(updatedUser.getEmail())) {
+
+            throw new UserAlreadyExistsException(updatedUser.getEmail());
+        }
+
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setAddressLine(updatedUser.getAddressLine());
+        existingUser.setCity(updatedUser.getCity());
+        existingUser.setPostalCode(updatedUser.getPostalCode());
+        existingUser.setCountry(updatedUser.getCountry());
+        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setMember(updatedUser.isMember());
+        existingUser.setRole(updatedUser.getRole());
+
+        return userAccountRepository.save(existingUser);
+    }
+
     //-----------------------------------------------------------------------------------------------------------------D
     public void deleteUser(Long id) {
         UserAccount user = getUserById(id);

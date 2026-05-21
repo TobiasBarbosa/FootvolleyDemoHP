@@ -1,6 +1,9 @@
 package org.example.footvolleydemohp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.BookingAlreadyExistsException;
+import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.BookingNotFoundException;
+import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.EventFullyBookedException;
 import org.example.footvolleydemohp.model.Booking;
 import org.example.footvolleydemohp.model.Event;
 import org.example.footvolleydemohp.model.UserAccount;
@@ -16,32 +19,29 @@ public class BookingService {
 
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     private final BookingRepository bookingRepository;
-    private final TrainingEventService trainingEventService;
+    private final EventService eventService;
     private final UserAccountService userAccountService;
 
     //***BUSINESS LOGIC & CRUD***--------------------------------------------------------------------------------------C
     public Booking createBooking(Long userId, Long eventId) {
 
         UserAccount user = userAccountService.getUserById(userId);
-        Event event = trainingEventService.getTrainingEventById(eventId);
+        Event event = eventService.getEventById(eventId);
 
-        // 1. Prevent duplicate booking
-        boolean alreadyBooked =
-                bookingRepository.existsByUserIdAndTrainingEventId(userId, eventId);
-
-        if (alreadyBooked) {
-            throw new IllegalArgumentException("User is already booked for this event");
+        // Prevent duplicate booking
+        if (bookingRepository.existsByUserIdAndEventId(userId, eventId)) {
+            throw new BookingAlreadyExistsException(userId, eventId);
         }
 
-        // 2. Check max participants
+        // Checks max participants
         int currentParticipants =
-                bookingRepository.countByTrainingEventId(eventId);
+                bookingRepository.countByEventId(eventId);
 
         if (currentParticipants >= event.getMaxParticipants()) {
-            throw new IllegalArgumentException("Event is fully booked");
+            throw new EventFullyBookedException(eventId);
         }
 
-        // 3. Create booking
+        // Create booking
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setEvent(event);
@@ -63,7 +63,7 @@ public class BookingService {
     //-----------------------------------------------------------------------------------------------------------------D
     public void deleteBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+                .orElseThrow(() -> new BookingNotFoundException(bookingId));
 
         bookingRepository.delete(booking);
     }
