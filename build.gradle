@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.6'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'org.example'
@@ -19,22 +19,34 @@ repositories {
 }
 
 dependencies {
+    // --- SPRING WEB (REST + MVC) ---
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // --- JPA / HIBERNATE ---
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // --- THYMELEAF (frontend templates) ---
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // --- VALIDATION (Bean Validation: @Email, @NotBlank, @Size) ---
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // --- DEVTOOLS (hot reload) ---
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // --- DATABASES ---
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
+    // --- LOMBOK (reduces boilerplate) ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-tasks.named('test') {
-    useJUnitPlatform()
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // --- TESTING ---
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

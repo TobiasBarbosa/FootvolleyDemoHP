@@ -1,4 +1,4 @@
-package org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions;
+package org.example.footvolleydemohp.exceptions.customexceptions.eventexceptions;
 
 import org.example.footvolleydemohp.exceptions.customexceptions.DomainException;
 

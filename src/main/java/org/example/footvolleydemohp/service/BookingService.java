@@ -3,7 +3,7 @@ package org.example.footvolleydemohp.service;
 import lombok.RequiredArgsConstructor;
 import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.BookingAlreadyExistsException;
 import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.BookingNotFoundException;
-import org.example.footvolleydemohp.exceptions.customexceptions.bookingexceptions.EventFullyBookedException;
+import org.example.footvolleydemohp.exceptions.customexceptions.eventexceptions.EventFullyBookedException;
 import org.example.footvolleydemohp.model.Booking;
 import org.example.footvolleydemohp.model.Event;
 import org.example.footvolleydemohp.model.UserAccount;

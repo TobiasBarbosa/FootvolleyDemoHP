@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    Optional<Booking> findbyId (Long id);
-
-    boolean existsByUserIdAndEventId(Long userId, Long trainingEventId);
+   boolean existsByUserIdAndEventId(Long userId, Long trainingEventId);
 
     int countByEventId(Long trainingEventId);
 
