@@ -1,11 +1,13 @@
 package org.example.footvolleydemohp.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.footvolleydemohp.model.Event;
 import org.example.footvolleydemohp.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,12 +18,15 @@ public class EventController {
     //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
     private final EventService eventService;
 
-    //***API MAPPING***-------------------------------------------------------------------------------------------------
+    //***CRUD***--------------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
     @PostMapping
-    public ResponseEntity<Event> create(@RequestBody Event event) {
+    public ResponseEntity<Event> create(@Valid @RequestBody Event event) {
         Event eventCreated = eventService.createEvent(event);
-        return ResponseEntity.status(201).body(eventCreated); //TODO status code?
+
+        return ResponseEntity
+                .created(URI.create("/api/events/" + eventCreated.getId()))
+                .body(eventCreated);
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
@@ -32,16 +37,15 @@ public class EventController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+
         return ResponseEntity.ok(eventService.getEventById(id));
     }
 
     //-----------------------------------------------------------------------------------------------------------------U
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id,
-                                                     @RequestBody Event event) {
-        return ResponseEntity.ok(
-                eventService.updateEvent(id, event)
-        );
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @Valid @RequestBody Event event) {
+
+        return ResponseEntity.ok(eventService.updateEvent(id, event));
     }
 
     //-----------------------------------------------------------------------------------------------------------------D
@@ -50,5 +54,4 @@ public class EventController {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
-
 }

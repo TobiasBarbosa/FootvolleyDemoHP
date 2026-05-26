@@ -6,6 +6,7 @@ import org.example.footvolleydemohp.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,7 +22,9 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestParam Long userId, @RequestParam Long eventId) {
         Booking bookingCreated = bookingService.createBooking(userId, eventId);
-        return ResponseEntity.status(201).body(bookingCreated);
+        return ResponseEntity
+                .created(URI.create("/api/bookings/" + bookingCreated.getId()))
+                .body(bookingCreated);
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
