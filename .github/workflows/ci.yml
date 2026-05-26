@@ -34,5 +34,5 @@ jobs:
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2024.2
         env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_654382827 }}
           QODANA_ENDPOINT: https://qodana.cloud
