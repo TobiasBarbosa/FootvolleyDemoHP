@@ -5,9 +5,7 @@ import org.example.footvolleydemohp.exceptions.customexceptions.eventexceptions.
 import org.example.footvolleydemohp.exceptions.customexceptions.eventexceptions.InvalidEventException;
 import org.example.footvolleydemohp.model.Event;
 import org.example.footvolleydemohp.repository.EventRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
