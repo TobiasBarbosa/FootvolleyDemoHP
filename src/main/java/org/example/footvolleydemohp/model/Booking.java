@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 public class Booking {
 
     //***ATTRIBUTES***--------------------------------------------------------------------------------------------------
-    //hej
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
