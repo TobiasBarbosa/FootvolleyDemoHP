@@ -1,7 +1,7 @@
 package org.example.footvolleydemohp.exceptions.customexceptions.userexceptions;
 
 import org.example.footvolleydemohp.exceptions.customexceptions.DomainException;
-import org.example.footvolleydemohp.model.Role;
+import org.example.footvolleydemohp.model.enums.Role;
 
 public class UnauthorizedAccessException extends DomainException {
 

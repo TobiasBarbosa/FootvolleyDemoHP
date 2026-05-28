@@ -14,20 +14,20 @@ import java.util.List;
 @Service
 public class EventService {
 
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    //***DEPENDENCIES***------------------------------------------------------------------------------------------------
     private final EventRepository eventRepository;
 
     //***BUSINESS LOGIC & CRUD***---------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
-    public Event createEvent(Event event){
+    public Event createEvent(Event event) {
         validateEvent(event);
         return eventRepository.save(event);
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
-    public Event getEventById(Long id){
+    public Event getEventById(Long id) {
         return eventRepository.findById(id)
-                              .orElseThrow(()-> new EventNotFoundException(id));
+                              .orElseThrow(() -> new EventNotFoundException(id));
     }
 
     public List<Event> getAllEvents() {
@@ -35,7 +35,8 @@ public class EventService {
     }
 
     //-----------------------------------------------------------------------------------------------------------------U
-    public Event updateEvent(Long id, Event updatedEvent){
+    public Event updateEvent(Long id, Event updatedEvent) {
+
         Event existingEvent = getEventById(id);
 
         validateEvent(updatedEvent);
@@ -53,12 +54,12 @@ public class EventService {
         existingEvent.setDescription(updatedEvent.getDescription());
 
         return eventRepository.save(existingEvent);
-
     }
 
     //-----------------------------------------------------------------------------------------------------------------D
-    public void deleteEvent(Long id){
-        eventRepository.delete(getEventById(id));
+    public void deleteEvent(Long id) {
+        Event event = getEventById(id);
+        eventRepository.delete(event);
     }
 
     //***VALIDATION METHODS***------------------------------------------------------------------------------------------
