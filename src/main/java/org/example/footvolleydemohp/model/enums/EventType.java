@@ -5,5 +5,5 @@ public enum EventType {
     TRAINING,
     TOURNAMENT,
     ALTINHA,
-    SOCIAL;
+    SOCIAL
 }

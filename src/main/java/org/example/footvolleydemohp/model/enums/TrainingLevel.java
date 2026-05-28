@@ -6,5 +6,5 @@ public enum TrainingLevel {
     BEGINNER,
     INTERMEDIATE,
     ADVANCED,
-    OPEN;
+    OPEN
 }

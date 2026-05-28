@@ -1,10 +1,8 @@
 package org.example.footvolleydemohp.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UnauthorizedAccessException;
 import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserAlreadyExistsException;
 import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserNotFoundException;
-import org.example.footvolleydemohp.model.enums.Role;
 import org.example.footvolleydemohp.model.UserAccount;
 import org.example.footvolleydemohp.repository.UserAccountRepository;
 import org.springframework.stereotype.Service;
