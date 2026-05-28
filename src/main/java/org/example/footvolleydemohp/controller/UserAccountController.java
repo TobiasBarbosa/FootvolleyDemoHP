@@ -2,6 +2,9 @@ package org.example.footvolleydemohp.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.footvolleydemohp.dto.userAccount.CreateUserAccountRequestDTO;
+import org.example.footvolleydemohp.dto.userAccount.UserAccountResponseDTO;
+import org.example.footvolleydemohp.mapper.UserAccountMapper;
 import org.example.footvolleydemohp.model.UserAccount;
 import org.example.footvolleydemohp.service.UserAccountService;
 import org.springframework.http.ResponseEntity;
@@ -15,39 +18,50 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserAccountController {
 
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    //***DEPENDENCIES***------------------------------------------------------------------------------------------------
     private final UserAccountService userAccountService;
+    private final UserAccountMapper userAccountMapper;
 
     //***CRUD***--------------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
     @PostMapping
-    public ResponseEntity<UserAccount> createUserAccount(
-            @Valid @RequestBody UserAccount user) {
-
-        UserAccount createdUser = userAccountService.createUser(user);
+    public ResponseEntity<UserAccountResponseDTO> createUserAccount(@Valid @RequestBody CreateUserAccountRequestDTO dto) {
+        UserAccount user = userAccountMapper.toEntity(dto);
+        UserAccount saved = userAccountService.createUser(user);
 
         return ResponseEntity
-                .created(URI.create("/api/users/" + createdUser.getId()))
-                .body(createdUser);
+                            .created(URI.create("/api/users/" + saved.getId()))
+                            .body(userAccountMapper.toResponseDTO(saved));
     }
 
     //-----------------------------------------------------------------------------------------------------------------R
-    @GetMapping
-    public ResponseEntity<List<UserAccount>> getAllUserAccounts() {
+    @GetMapping("/{id}")
+    public ResponseEntity<UserAccountResponseDTO> getUserAccountById(@PathVariable Long id) {
 
-        return ResponseEntity.ok(userAccountService.getAllUsers());
+        UserAccount user = userAccountService.getUserById(id);
+
+        return ResponseEntity.ok(userAccountMapper.toResponseDTO(user));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserAccount> getUserAccountById(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<List<UserAccountResponseDTO>> getAllUserAccounts() {
 
-        return ResponseEntity.ok(userAccountService.getUserById(id));
+        List<UserAccountResponseDTO> users = userAccountService.getAllUsers()
+                                                               .stream()
+                                                               .map(userAccountMapper::toResponseDTO)
+                                                               .toList();
+
+        return ResponseEntity.ok(users);
     }
 
     //-----------------------------------------------------------------------------------------------------------------U
     @PutMapping("/{id}")
-    public ResponseEntity<UserAccount> updateUserAccount(@PathVariable Long id, @Valid @RequestBody UserAccount user) {
-        return ResponseEntity.ok(userAccountService.updateUser(id, user));
+    public ResponseEntity<UserAccountResponseDTO> updateUserAccount(@PathVariable Long id, @Valid
+                                                                    @RequestBody CreateUserAccountRequestDTO dto) {
+        UserAccount updated = userAccountMapper.toEntity(dto);
+        UserAccount saved = userAccountService.updateUser(id, updated);
+
+        return ResponseEntity.ok(userAccountMapper.toResponseDTO(saved));
     }
 
     //-----------------------------------------------------------------------------------------------------------------D
@@ -57,4 +71,6 @@ public class UserAccountController {
 
         return ResponseEntity.noContent().build();
     }
+
+
 }

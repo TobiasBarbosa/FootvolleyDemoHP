@@ -1,4 +1,4 @@
-package org.example.footvolleydemohp.model;
+package org.example.footvolleydemohp.model.enums;
 
 public enum TrainingLevel {
 

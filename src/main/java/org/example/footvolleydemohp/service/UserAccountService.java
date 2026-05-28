@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UnauthorizedAccessException;
 import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserAlreadyExistsException;
 import org.example.footvolleydemohp.exceptions.customexceptions.userexceptions.UserNotFoundException;
-import org.example.footvolleydemohp.model.Role;
+import org.example.footvolleydemohp.model.enums.Role;
 import org.example.footvolleydemohp.model.UserAccount;
 import org.example.footvolleydemohp.repository.UserAccountRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class UserAccountService {
     //***BUSINESS LOGIC & CRUD***---------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------------------C
     public UserAccount createUser(UserAccount user) {
-        // Business rule: email must be unique
+        // email must be unique
         if (userAccountRepository.existsByEmail(user.getEmail())) {
             throw new UserAlreadyExistsException(user.getEmail());
         }
@@ -35,15 +35,6 @@ public class UserAccountService {
     }
 
     public List<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
-    }
-
-    public List<UserAccount> getAllUsersForAdmin(UserAccount requester) {
-
-        if (requester.getRole() != Role.ADMIN) {
-            throw new UnauthorizedAccessException(requester.getRole());
-        }
-
         return userAccountRepository.findAll();
     }
 

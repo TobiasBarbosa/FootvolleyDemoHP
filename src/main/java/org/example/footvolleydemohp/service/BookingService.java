@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class BookingService {
 
-    //***ACCESS ATTRIBUTES***-------------------------------------------------------------------------------------------
+    //***DEPENDENCIES***------------------------------------------------------------------------------------------------
     private final BookingRepository bookingRepository;
     private final EventService eventService;
     private final UserAccountService userAccountService;
@@ -33,9 +33,8 @@ public class BookingService {
             throw new BookingAlreadyExistsException(userId, eventId);
         }
 
-        // Checks max participants
-        int currentParticipants =
-                bookingRepository.countByEventId(eventId);
+        // Check capacity
+        int currentParticipants = bookingRepository.countByEventId(eventId);
 
         if (currentParticipants >= event.getMaxParticipants()) {
             throw new EventFullyBookedException(eventId);

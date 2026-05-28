@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.footvolleydemohp.model.enums.Role;
 
 @Entity // JPA: gør klassen til en database-tabel (Hibernate mapper den ved startup)
 @Getter

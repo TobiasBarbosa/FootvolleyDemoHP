@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.footvolleydemohp.model.enums.EventType;
+import org.example.footvolleydemohp.model.enums.TrainingLevel;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
